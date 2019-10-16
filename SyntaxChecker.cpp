@@ -23,11 +23,12 @@ SyntaxChecker::SyntaxChecker(string f)
   fileName = f;
 }
 
+// method that check files for delimiter syntax errors, returns true if no errors
 bool SyntaxChecker::checkFile()
 {
-  string line = "";
-  int lineNum = 0;
-  GenStack<char> delimiters;
+  string line = ""; // represents current line
+  int lineNum = 0; // line number
+  GenStack<char> delimiters; // stack of opening delimiters ( "{" , "[" , "(")
   bool isComment = false;
   ifstream file(fileName);
   if (file)
@@ -119,6 +120,13 @@ bool SyntaxChecker::checkFile()
               isComment = false;
             }
           }
+        }
+        else if (line[i] == '\'' || line[i] == '\"') // indicates beginning or end of quotation marks
+        {
+          if (isComment)
+            isComment = false;
+          else
+            isComment = true;
         }
       }
     }
